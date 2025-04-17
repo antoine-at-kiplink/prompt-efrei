@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trump, Macron et les réseaux</title>
+    <!-- Material Design Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/4.0.0/font/MaterialIcons-Regular.ttf" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Material Design Components -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --mdc-theme-primary: #1976d2;
+            --mdc-theme-secondary: #ff4081;
+            --mdc-theme-background: #f5f5f5;
+            --mdc-theme-surface: #ffffff;
+            --mdc-theme-error: #b00020;
+            --mdc-theme-on-primary: #ffffff;
+            --mdc-theme-on-secondary: #ffffff;
+            --mdc-theme-on-surface: #000000;
+            --mdc-theme-on-error: #ffffff;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--mdc-theme-background);
+            color: rgba(0, 0, 0, 0.87);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        .card {
+            border-radius: 4px;
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+            background-color: var(--mdc-theme-surface);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .card-title {
+            font-size: 24px;
+            font-weight: 500;
+            padding: 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            margin: 0;
+            color: var(--mdc-theme-primary);
+        }
+        .card-content {
+            padding: 16px;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 500;
+            margin-top: 24px;
+            margin-bottom: 16px;
+            color: var(--mdc-theme-primary);
+        }
+        .list-container {
+            margin: 16px 0;
+            padding-left: 32px;
+        }
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .list-item::before {
+            content: "•";
+            color: var(--mdc-theme-primary);
+            font-size: 18px;
+            margin-right: 8px;
+        }
+        .highlight-box {
+            background-color: rgba(25, 118, 210, 0.08);
+            border-left: 4px solid var(--mdc-theme-primary);
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .header {
+            background-color: var(--mdc-theme-primary);
+            color: var(--mdc-theme-on-primary);
+            padding: 24px 16px;
+            margin-bottom: 24px;
+        }
+        .header h1 {
+            font-size: 32px;
+            font-weight: 400;
+            margin: 0;
+        }
+        .header p {
+            font-size: 16px;
+            margin: 8px 0 0 0;
+        }
+        .text-block {
+            margin-bottom: 24px;
+            padding: 16px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .emoji {
+            font-size: 24px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .objective-text {
+            font-size: 16px;
+            line-height: 2;
+            margin: 24px 0;
+            padding: 16px;
+            background-color: rgba(25, 118, 210, 0.05);
+            border-radius: 4px;
+        }
+        .select-style {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 0 4px;
+            border: 1px solid var(--mdc-theme-primary);
+            border-radius: 4px;
+            background-color: white;
+            color: var(--mdc-theme-primary);
+            font-size: 16px;
+            cursor: pointer;
+            min-width: 150px;
+            transition: box-shadow 0.3s ease;
+        }
+        .select-style:hover, .select-style:focus {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+        .select-style option {
+            padding: 8px;
+        }
+        .copy-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--mdc-theme-primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .copy-btn:hover {
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        .copy-btn i {
+            margin-right: 8px;
+        }
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background-color: #323232;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 1001;
+            display: none;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Nouveaux styles pour la mise en page améliorée */
+        .content-section {
+            margin-bottom: 24px;
+        }
+        
+        .content-heading {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+            padding: 10px 0;
+            margin: 10px 0;
+            border-bottom: 2px solid var(--mdc-theme-primary);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        
+        @media (min-width: 768px) {
+            .content-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+        
+        .content-item {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        
+        .content-item:hover {
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .item-header {
+            background-color: rgba(25, 118, 210, 0.1);
+            padding: 12px 16px;
+            border-left: 4px solid var(--mdc-theme-primary);
+            font-size: 16px;
+        }
+        
+        .item-content {
+            padding: 16px;
+            line-height: 1.5;
+        }
+
+        /* Nouveaux styles pour les textes thématiques */
+        .theme-text {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin: 32px 0;
+            overflow: hidden;
+        }
+
+        .theme-header {
+            padding: 24px;
+            background: linear-gradient(45deg, var(--mdc-theme-primary), #2196f3);
+            color: white;
+            position: relative;
+        }
+
+        .theme-header h4 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .theme-header .subtitle {
+            margin-top: 8px;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .theme-content {
+            padding: 24px;
+        }
+
+        .theme-paragraph {
+            margin: 16px 0;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .theme-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .theme-list-item {
+            padding: 12px 16px;
+            margin: 8px 0;
+            background: rgba(25, 118, 210, 0.05);
+            border-radius: 6px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .theme-list-item:before {
+            content: "•";
+            color: var(--mdc-theme-primary);
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .theme-highlight {
+            background: #f5f5f5;
+            border-left: 4px solid var(--mdc-theme-primary);
+            padding: 16px 24px;
+            margin: 24px 0;
+        }
+
+        .theme-icon {
+            font-size: 32px;
+            margin-right: 16px;
+            color: white;
+        }
+
+        .theme-footer {
+            padding: 16px 24px;
+            background: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+
+        /* Styles spécifiques pour l'environnement */
+        .environment-theme {
+            --theme-color: #2E7D32;
+        }
+
+        .environment-theme .theme-header {
+            background: linear-gradient(45deg, #2E7D32, #4CAF50);
+        }
+
+        /* Styles spécifiques pour les droits des femmes */
+        .women-rights-theme {
+            --theme-color: #C2185B;
+        }
+
+        .women-rights-theme .theme-header {
+            background: linear-gradient(45deg, #C2185B, #E91E63);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--theme-color);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Styles pour les éléments de langage */
+        .language-elements {
+            padding: 15px 0;
+        }
+
+        .language-elements label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .language-elements input[type="checkbox"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Trump, Macron et les réseaux</h1>
+            <p>Guide de rédaction humoristique pour les réseaux sociaux</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="card-title">Contexte</h2>
+            <div class="card-content">
+                <p>Je suis un expert en communication sur les réseaux sociaux. Tu es un rédacteur spécialisé dans l'imitation de styles politiques pour créer des contenus humoristiques.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">Objectif</h2>
+            <div class="card-content">
+                <p class="objective-text">
+                    Tu dois rédiger une communication 
+                    <select id="platform-select" class="browser-default select-style">
+                        <option value="" disabled selected>Choisir une plateforme</option>
+                        <option value="twitter">Twitter</option>
+                        <option value="linkedin">LinkedIn</option>
+                    </select>
+                    dans un style d'écriture 
+                    <select id="style-select" class="browser-default select-style">
+                        <option value="" disabled selected>Choisir un style</option>
+                        <option value="trump">Donald Trump</option>
+                        <option value="macron">Emmanuel Macron</option>
+                    </select>
+                    sur le sujet suivant : 
+                    <select id="subject-select" class="browser-default select-style">
+                        <option value="" disabled selected>Choisir un sujet</option>
+                        <option value="economy">Economie</option>
+                        <option value="environment">Environnement</option>
+                    </select>
+                    L'objectif principal de ta communication est de 
+                    <select id="objective-select" class="browser-default select-style">
+                        <option value="" disabled selected>Choisir un objectif</option>
+                        <option value="attack">Attaquer ses adversaires politiques</option>
+                        <option value="support">Mousser ses supporters</option>
+                        <option value="defend">Défendre une cause</option>
+                    </select>
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">Contraintes</h2>
+            <div class="card-content">
+                <p>Ta production doit :</p>
+                <div class="list-container">
+                    <div class="list-item">Servir clairement l'objectif édicté.</div>
+                    <div class="list-item">Respecter les bonnes pratiques du canal choisi (voir "Ressources complémentaires").</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">Éléments de langage</h2>
+            <div class="card-content">
+                <p>Sélectionnez les éléments de langage à inclure :</p>
+                <div class="language-elements">
+                    <label>
+                        <input type="checkbox" id="wokisme-checkbox" class="filled-in" />
+                        <span>Wokisme</span>
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" id="rednecks-checkbox" class="filled-in" />
+                        <span>Rednecks</span>
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" id="sarkozy-checkbox" class="filled-in" />
+                        <span>Sarkozy</span>
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" id="poutine-checkbox" class="filled-in" />
+                        <span>Poutine</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ressources complémentaires -->
+        <div class="card">
+            <h2 class="card-title">Ressources complémentaires</h2>
+            <div class="card-content">
+                <div class="text-block">
+                    <h3 class="section-title"><span class="emoji">🧘</span> Bonnes pratiques pour communiquer efficacement sur Twitter</h3>
+                    <p>Voici trois caractéristiques d'une rédaction Twitter réussie sur le fond et la forme :</p>
+
+                    <div class="content-section">
+                        <h4 class="content-heading">Sur le fond :</h4>
+                        <div class="content-grid">
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <strong>Concision et impact</strong>
+                                </div>
+                                <div class="item-content">
+                                    Le contenu doit être percutant, direct et tenir dans les 280 caractères pour maximiser l'engagement.
+                                </div>
+                            </div>
+                            
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <strong>Polarisation et controverse</strong>
+                                </div>
+                                <div class="item-content">
+                                    Les tweets qui suscitent des réactions fortes (positives ou négatives) génèrent plus d'interactions et de visibilité.
+                                </div>
+                            </div>
+                            
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <strong>Personnalisation et authenticité</strong>
+                                </div>
+                                <div class="item-content">
+                                    Un ton personnel, voire familier, et l'expression d'opinions fortes créent une connexion avec l'audience.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <h4 class="content-heading">Sur la forme :</h4>
+                        <div class="content-grid">
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <strong>Hashtags stratégiques</strong>
+                                </div>
+                                <div class="item-content">
+                                    Utiliser 1-2 hashtags pertinents pour augmenter la visibilité sans surcharger le message.
+                                </div>
+                            </div>
+                            
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <strong>Mentions et réponses</strong>
+                                </div>
+                                <div class="item-content">
+                                    Mentionner des comptes influents ou répondre à des tweets populaires pour augmenter la portée.
+                                </div>
+                            </div>
+                            
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <strong>Emojis et ponctuation</strong>
+                                </div>
+                                <div class="item-content">
+                                    Utiliser des emojis stratégiquement et une ponctuation expressive (points d'exclamation, majuscules) pour renforcer l'impact.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-block">
+                    <h3 class="section-title"><span class="emoji">🧘</span> Bonnes pratiques pour communiquer efficacement sur LinkedIn</h3>
+
+                    <div class="content-section">
+                        <h4 class="content-heading">Sur le fond :</h4>
+                        <div class="content-grid">
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <strong>Expertise démontrable</strong>
+                                </div>
+                                <div class="item-content">
+                                    Un contenu qui démontre votre expertise professionnelle ou celle de votre organisation, apportant de la valeur ajoutée et des insights pertinents pour votre secteur d'activité.
+                                </div>
+                            </div>
+                            
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <strong>Actualité et pertinence</strong>
+                                </div>
+                                <div class="item-content">
+                                    Le contenu doit être en lien avec l'actualité professionnelle ou sectorielle, offrant un angle d'analyse original sur des sujets qui intéressent réellement votre réseau.
+                                </div>
+                            </div>
+                            
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <strong>Authenticité et positionnement</strong>
+                                </div>
+                                <div class="item-content">
+                                    Une prise de position claire qui reflète vos valeurs ou celles de votre organisation, créant ainsi une identité professionnelle reconnaissable et cohérente.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <h4 class="content-heading">Sur la forme :</h4>
+                        <div class="content-grid">
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <strong>Structure aérée et lisible</strong>
+                                </div>
+                                <div class="item-content">
+                                    Utilisation de titres accrocheurs, paragraphes courts, espaces blancs, listes à puces et mise en gras des éléments clés pour faciliter la lecture sur mobile et capter l'attention.
+                                </div>
+                            </div>
+                            
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <strong>Appel à l'engagement</strong>
+                                </div>
+                                <div class="item-content">
+                                    Conclusion avec une question ouverte ou une invitation à partager un avis, encourageant ainsi les interactions (commentaires, partages) qui augmenteront la visibilité du post.
+                                </div>
+                            </div>
+                            
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <strong>Utilisation stratégique des hashtags</strong>
+                                </div>
+                                <div class="item-content">
+                                    Sélection de 3 à 5 hashtags pertinents et spécifiques, placés généralement en fin de publication, permettant d'élargir la portée du contenu au-delà de votre réseau immédiat.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton Copier mon prompt -->
+    <button id="copy-prompt-btn" class="copy-btn waves-effect waves-light">
+        <i class="material-icons">content_copy</i> Copier mon prompt
+    </button>
+    
+    <!-- Toast de confirmation -->
+    <div id="copy-toast" class="toast">
+        Prompt copié dans le presse-papiers !
+    </div>
+
+    <!-- Material Design Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize selects
+            var selects = document.querySelectorAll('select');
+            M.FormSelect.init(selects);
+            
+            // Add event listeners for selects
+            document.getElementById('platform-select').addEventListener('change', function() {
+                console.log('Platform selected: ' + this.value);
+            });
+            
+            document.getElementById('style-select').addEventListener('change', function() {
+                console.log('Style selected: ' + this.value);
+            });
+            
+            document.getElementById('subject-select').addEventListener('change', function() {
+                console.log('Subject selected: ' + this.value);
+            });
+            
+            document.getElementById('objective-select').addEventListener('change', function() {
+                console.log('Objective selected: ' + this.value);
+            });
+            
+            // Copy prompt functionality avec construction complète
+            document.getElementById('copy-prompt-btn').addEventListener('click', function() {
+                // Nous allons construire manuellement le texte complet
+                let promptText = '';
+                
+                // 1. Contexte - texte fixe
+                promptText += 'Contexte\n';
+                promptText += 'Je suis un expert en communication sur les réseaux sociaux. Tu es un rédacteur spécialisé dans l\'imitation de styles politiques pour créer des contenus humoristiques.\n\n';
+                
+                // 2. Objectif - avec les valeurs sélectionnées dans les menus déroulants
+                const platformSelect = document.getElementById('platform-select');
+                const styleSelect = document.getElementById('style-select');
+                const subjectSelect = document.getElementById('subject-select');
+                const objectiveSelect = document.getElementById('objective-select');
+                
+                const platformValue = platformSelect.options[platformSelect.selectedIndex]?.text || 'Twitter';
+                const styleValue = styleSelect.options[styleSelect.selectedIndex]?.text || 'Donald Trump';
+                const subjectValue = subjectSelect.options[subjectSelect.selectedIndex]?.text || 'Economie';
+                const objectiveValue = objectiveSelect.options[objectiveSelect.selectedIndex]?.text || 'Attaquer ses adversaires politiques';
+                
+                promptText += 'Objectif\n\n';
+                promptText += `Tu dois rédiger une communication [${platformValue}] dans un style d'écriture [${styleValue}] sur le sujet suivant : [${subjectValue}] L'objectif principal de ta communication est de [${objectiveValue}]\n\n`;
+                
+                // 3. Contraintes - texte fixe
+                promptText += 'Contraintes\n\n';
+                promptText += 'Ta production doit :\n\n';
+                promptText += '- servir clairement l\'objectif édicté.\n';
+                promptText += '- respecter les bonnes pratiques du canal choisi (voir "Ressources complémentaires")\n';
+                
+                // 4. Nouveau : Éléments de langage sélectionnés
+                const wokismeChecked = document.getElementById('wokisme-checkbox').checked;
+                const rednecksChecked = document.getElementById('rednecks-checkbox').checked;
+                const sarkozyChecked = document.getElementById('sarkozy-checkbox').checked;
+                const poutineChecked = document.getElementById('poutine-checkbox').checked;
+                
+                let elementsLangage = [];
+                if (wokismeChecked) elementsLangage.push('Wokisme');
+                if (rednecksChecked) elementsLangage.push('Rednecks');
+                if (sarkozyChecked) elementsLangage.push('Sarkozy');
+                if (poutineChecked) elementsLangage.push('Poutine');
+                
+                if (elementsLangage.length > 0) {
+                    promptText += '- s\'inspirer des éléments de langages suivants : ' + elementsLangage.join(', ') + '\n\n';
+                } else {
+                    promptText += '\n';
+                }
+                
+                // 5. Ressources complémentaires - textes fixes
+                promptText += 'Ressources complémentaires\n\n';
+                
+                // Twitter
+                promptText += '🧘 Bonnes pratiques pour communiquer efficacement sur Twitter\n';
+                promptText += 'Voici trois caractéristiques d\'une rédaction Twitter réussie sur le fond et la forme :\n';
+                promptText += 'Sur le fond :\n';
+                promptText += '- Concision et impact - Le contenu doit être percutant, direct et tenir dans les 280 caractères pour maximiser l\'engagement.\n';
+                promptText += '- Polarisation et controverse - Les tweets qui suscitent des réactions fortes (positives ou négatives) génèrent plus d\'interactions et de visibilité.\n';
+                promptText += '- Personnalisation et authenticité - Un ton personnel, voire familier, et l\'expression d\'opinions fortes créent une connexion avec l\'audience.\n';
+                promptText += 'Sur la forme :\n';
+                promptText += '- Hashtags stratégiques - Utiliser 1-2 hashtags pertinents pour augmenter la visibilité sans surcharger le message.\n';
+                promptText += '- Mentions et réponses - Mentionner des comptes influents ou répondre à des tweets populaires pour augmenter la portée.\n';
+                promptText += '- Emojis et ponctuation - Utiliser des emojis stratégiquement et une ponctuation expressive (points d\'exclamation, majuscules) pour renforcer l\'impact.\n\n';
+                
+                // LinkedIn
+                promptText += '🧘 Bonnes pratiques pour communiquer efficacement sur LinkedIn\n\n';
+                promptText += 'Sur le fond :\n\n';
+                promptText += '- Expertise démontrable - Un contenu qui démontre votre expertise professionnelle ou celle de votre organisation, apportant de la valeur ajoutée et des insights pertinents pour votre secteur d\'activité.\n';
+                promptText += '- Actualité et pertinence - Le contenu doit être en lien avec l\'actualité professionnelle ou sectorielle, offrant un angle d\'analyse original sur des sujets qui intéressent réellement votre réseau.\n';
+                promptText += '- Authenticité et positionnement - Une prise de position claire qui reflète vos valeurs ou celles de votre organisation, créant ainsi une identité professionnelle reconnaissable et cohérente.\n\n';
+                promptText += 'Sur la forme :\n\n';
+                promptText += '- Structure aérée et lisible - Utilisation de titres accrocheurs, paragraphes courts, espaces blancs, listes à puces et mise en gras des éléments clés pour faciliter la lecture sur mobile et capter l\'attention.\n';
+                promptText += '- Appel à l\'engagement - Conclusion avec une question ouverte ou une invitation à partager un avis, encourageant ainsi les interactions (commentaires, partages) qui augmenteront la visibilité du post.\n';
+                promptText += '- Utilisation stratégique des hashtags - Sélection de 3 à 5 hashtags pertinents et spécifiques, placés généralement en fin de publication, permettant d\'élargir la portée du contenu au-delà de votre réseau immédiat.\n\n';
+                
+                // Créer un élément textarea temporaire
+                const textArea = document.createElement('textarea');
+                textArea.value = promptText;
+                textArea.style.position = 'fixed';  // Évite de défiler vers le bas
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                
+                // Sélectionner le contenu du textarea
+                textArea.select();
+                textArea.setSelectionRange(0, 99999); // Pour les appareils mobiles
+                
+                try {
+                    // Exécuter la commande de copie
+                    const successful = document.execCommand('copy');
+                    
+                    if (successful) {
+                        // Show toast notification
+                        const toast = document.getElementById('copy-toast');
+                        toast.style.display = 'block';
+                        setTimeout(function() {
+                            toast.style.display = 'none';
+                        }, 3000);
+                    } else {
+                        console.error('La commande de copie a échoué');
+                        showTextModal(promptText);
+                    }
+                } catch (err) {
+                    console.error('Erreur lors de la copie:', err);
+                    showTextModal(promptText);
+                }
+                
+                // Nettoyer
+                document.body.removeChild(textArea);
+            });
+            
+            // Fonction pour afficher une modal avec le texte
+            function showTextModal(text) {
+                // Créer un élément modal
+                const modalDiv = document.createElement('div');
+                modalDiv.className = 'modal-overlay';
+                modalDiv.innerHTML = `
+                    <div class="modal-content">
+                        <h4>Votre Prompt</h4>
+                        <p>Sélectionnez tout le texte ci-dessous et copiez-le manuellement avec Ctrl+C / Cmd+C:</p>
+                        <textarea class="modal-textarea">${text}</textarea>
+                        <div class="modal-footer">
+                            <button class="modal-close-btn waves-effect waves-light btn">Fermer</button>
+                        </div>
+                    </div>
+                `;
+                
+                // Styles pour la modal
+                const style = document.createElement('style');
+                style.textContent = `
+                    .modal-overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        z-index: 1000;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    .modal-content {
+                        background-color: white;
+                        padding: 24px;
+                        border-radius: 4px;
+                        max-width: 80%;
+                        max-height: 80%;
+                        overflow-y: auto;
+                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                    }
+                    .modal-textarea {
+                        width: 100%;
+                        height: 300px;
+                        margin: 16px 0;
+                        padding: 8px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        font-family: monospace;
+                    }
+                    .modal-footer {
+                        text-align: right;
+                        margin-top: 16px;
+                    }
+                `;
+                
+                document.head.appendChild(style);
+                document.body.appendChild(modalDiv);
+                
+                // Sélectionner tout le texte du textarea
+                const textarea = modalDiv.querySelector('.modal-textarea');
+                textarea.select();
+                
+                // Ajouter un gestionnaire d'événements pour le bouton de fermeture
+                modalDiv.querySelector('.modal-close-btn').addEventListener('click', function() {
+                    document.body.removeChild(modalDiv);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
